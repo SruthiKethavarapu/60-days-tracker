@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily 1700 – You Can Do It</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    h2 {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    #progress {
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      max-width: 400px;
+      margin: auto;
+    }
+    .day {
+      background: white;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    .day.done {
+      background: #a6f1a6;
+      text-decoration: line-through;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <h1>Daily 1700</h1>
+  <h2>You Can Do It</h2>
+  <div id="progress">You’ve completed 0 out of 60 days</div>
+  <div class="grid" id="daysGrid"></div>
+
+  <script>
+    const totalDays = 60;
+    const grid = document.getElementById("daysGrid");
+    const progress = document.getElementById("progress");
+    let completed = JSON.parse(localStorage.getItem("challengeProgress")) || [];
+
+    function updateProgress() {
+      progress.innerText = `You’ve completed ${completed.length} out of ${totalDays} days`;
+    }
+
+    for (let i = 1; i <= totalDays; i++) {
+      const box = document.createElement("div");
+      box.classList.add("day");
+      box.innerText = "Day " + i;
+
+      if (completed.includes(i)) {
+        box.classList.add("done");
+      }
+
+      box.addEventListener("click", () => {
+        if (!completed.includes(i)) {
+          completed.push(i);
+          box.classList.add("done");
+          localStorage.setItem("challengeProgress", JSON.stringify(completed));
+          updateProgress();
+        }
+      });
+
+      grid.appendChild(box);
+    }
+
+    updateProgress();
+  </script>
+</body>
+</html>
